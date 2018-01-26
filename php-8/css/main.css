@@ -1,0 +1,10 @@
+form,
+ul {
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+form.delete {
+    display: inline;
+}
