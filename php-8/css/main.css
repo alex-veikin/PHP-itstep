@@ -1,10 +1,28 @@
-/*form,*/
 /*ul {*/
     /*display: block;*/
     /*max-width: 800px;*/
     /*margin: 0 auto;*/
 /*}*/
 
-/*form.delete {*/
-    /*display: inline;*/
+/*.reg-form {*/
+    /*display: block;*/
 /*}*/
+
+.list {
+    display: inline;
+}
+
+.list button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.list button:hover {
+    color: red;
+}
+
+button a,
+button a:hover {
+    color: white;
+}
