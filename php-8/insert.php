@@ -16,11 +16,11 @@ if(!$title || !$description) {
     exit();
 }
 
-$stmt = $pdo->prepare("INSERT INTO `pages` (`title`, `description`, `status`)
- VALUES (:title, :description, $status)");
+$stmt = $pdo->prepare("INSERT INTO `pages` (`title`, `description`, `status`) VALUES (:title, :description, :status)");
 
 $stmt->bindValue(':title', $title, PDO::PARAM_STR);
 $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+$stmt->bindValue(':status', $status, PDO::PARAM_STR);
 
 $result = $stmt->execute();
 

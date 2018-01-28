@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$db   = "php_8";
+$db   = "itstep_pages";
 $user = "root";
 $password = "";
 $charset = "utf8";

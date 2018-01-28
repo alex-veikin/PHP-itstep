@@ -28,79 +28,87 @@ session_start();
 
 <body>
 
-<?php
+<div class="container">
+    <div class="row">
 
-require_once "db.php";
+		<?php
+
+		require_once "db.php";
 
 
-$stmt = $pdo->query("SELECT * FROM pages");
+		$stmt = $pdo->query( "SELECT * FROM pages" );
 
-$res = $stmt->fetchAll();
+		$res = $stmt->fetchAll();
 
-echo "<ul>";
-foreach ($res as $pages) {
-    echo "<li>";
-    echo "<form class='delete' action='delete.php' method='post'>
+		echo "<ul class='center'>";
+		foreach ( $res as $pages ) {
+			echo "<li>";
+			echo "<form class='delete' action='delete.php' method='post'>
 <button type='submit' name='id' value='" . $pages['id'] . "'>Delete</button>
 </form>";
-    echo "</li>";
-    echo "<a href='index.php?id=" . $pages['id'] . "'>ID: " . $pages['id'] . ", Title: " . $pages['title'] . ", Description: "
-        . $pages['description'] . " Status: " . $pages['status'] . "</a>";
-    echo "</li>";
-}
-echo "</ul>";
+			echo "</li>";
+			echo "<a href='index.php?id=" . $pages['id'] . "'>ID: " . $pages['id'] . ", Title: " . $pages['title'] . ", Description: "
+			     . $pages['description'] . " Status: " . $pages['status'] . "</a>";
+			echo "</li>";
+		}
+		echo "</ul>";
 
-$title = false;
-$description = false;
-$status = false;
+		$title       = false;
+		$description = false;
+		$status      = false;
 
-if ($_GET['id']) {
-    session_unset();
-    foreach ($res as $pages) {
-        if ($pages['id'] == $_GET['id']) {
-            $title = $pages['title'];
-            $description = $pages['description'];
-            $status = $pages['status'];
-        }
-    }
-}
+		if ( $_GET['id'] ) {
+			session_unset();
+			foreach ( $res as $pages ) {
+				if ( $pages['id'] == $_GET['id'] ) {
+					$title       = $pages['title'];
+					$description = $pages['description'];
+					$status      = $pages['status'];
+				}
+			}
+		}
 
-?>
+		?>
 
 
-<form action="<?= ($_GET['id']) ? "update.php" : "insert.php" ?>" method="post">
-    <div class="form-group">
-        <?php if ($_GET['id']): ?>
-            <input type="text" name="id" value="<?= $_GET['id'] ?>" hidden>
-        <?php endif; ?>
-        <label for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title"
-               placeholder="Enter title" value="<?= $_SESSION['title'] ?? $title ?>">
+        <form action="<?= ( $_GET['id'] ) ? "update.php" : "insert.php" ?>" method="post">
+            <div class="form-group">
+				<?php if ( $_GET['id'] ): ?>
+                    <input type="text" name="id" value="<?= $_GET['id'] ?>" hidden>
+				<?php endif; ?>
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title"
+                       placeholder="Enter title" value="<?= $_SESSION['title'] ?? $title ?>">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description"
+                          placeholder="Description"><?= $_SESSION['description'] ?? $description ?></textarea>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="status" id="status" value="0" hidden checked>
+                <input type="checkbox" class="form-check-input" name="status" id="status" value="1"
+					<?= ( $_SESSION['status'] ?? $status ) ? "checked" : "" ?>>
+                <label class="form-check-label" for="status">Publish?</label>
+            </div>
+
+            <ul>
+				<?php
+				if ( count( $_SESSION['error'] ) ) {
+					echo "<li class='error'>" . $_SESSION['error'] . "</li>";
+				} else if ( count( $_SESSION['error'] ) ) {
+					echo "<li class='good'>" . $_SESSION['good'] . "</li>";
+					session_unset();
+				}
+				?>
+            </ul>
+            <button type="submit"
+                    class="btn btn-primary"><?= ( $_GET['id'] ) ? "Update page" : "Add new page" ?></button>
+        </form>
+
+
     </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea class="form-control" id="description" name="description"
-                  placeholder="Description"><?= $_SESSION['description'] ?? $description ?></textarea>
-    </div>
-    <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="status" id="status" value="0" hidden checked>
-        <input type="checkbox" class="form-check-input" name="status" id="status" value="1"
-            <?= ($_SESSION['status'] ?? $status) ? "checked" : "" ?>>
-        <label class="form-check-label" for="status">Publish?</label>
-    </div>
-
-    <ul>
-        <?php
-        if (count($_SESSION['error'])) {
-            echo "<li class='error'>" . $_SESSION['error'] . "</li>";
-        } else if (count($_SESSION['error'])) {
-            echo "<li class='good'>" . $_SESSION['good'] . "</li>";
-            session_unset();
-        }
-        ?>
-    </ul>
-    <button type="submit" class="btn btn-primary"><?= ($_GET['id']) ? "Update page" : "Add new page" ?></button>
-</form>
+</div>
 
 
 <script src="js/jquery-3.2.1.js"></script>
